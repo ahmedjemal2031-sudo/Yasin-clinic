@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Yasin Clinic</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{font-family:Arial;background:#f4f6f9;margin:0}
+header{background:#2563eb;color:white;padding:14px;text-align:center}
+.card{background:white;margin:12px;padding:12px;border-radius:8px}
+input,button{width:100%;padding:10px;margin-top:6px}
+button{background:#2563eb;color:white;border:none;border-radius:6px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid #ccc;padding:6px;text-align:center}
+th{background:#2563eb;color:white}
+</style>
+</head>
+<body>
+
+<header>
+<h2>Yasin Clinic - All in One App</h2>
+</header>
+
+<div class="card">
+<h3>Patient Registration</h3>
+<input id="pname" placeholder="Name">
+<input id="pphone" placeholder="Phone">
+<input id="pkebele" placeholder="Kebele">
+<input id="pganda" placeholder="Ganda">
+<button onclick="addPatient()">Save</button>
+</div>
+
+<div class="card">
+<h3>Billing & Payment</h3>
+<input id="payamount" placeholder="Amount">
+<button onclick="pay()">Pay</button>
+<p id="paymsg"></p>
+</div>
+
+<div class="card">
+<h3>Daily Summary</h3>
+<p id="summary"></p>
+</div>
+
+<div class="card">
+<h3>Patient Records</h3>
+<table>
+<tr><th>Name</th><th>Phone</th><th>Kebele</th><th>Ganda</th></tr>
+<tbody id="ptable"></tbody>
+</table>
+</div>
+
+<script>
+let patients = JSON.parse(localStorage.patients||"[]");
+let sales = Number(localStorage.sales||0);
+
+function addPatient(){
+patients.push({
+  name:pname.value,
+  phone:pphone.value,
+  kebele:pkebele.value,
+  ganda:pganda.value
+});
+localStorage.patients=JSON.stringify(patients);
+renderPatients();
+}
+
+function pay(){
+let amt = Number(payamount.value);
+sales += amt;
+localStorage.sales = sales;
+paymsg.innerText = "Payment Saved";
+summary.innerText = "Total Sales: " + sales + " ETB";
+}
+
+function renderPatients(){
+ptable.innerHTML="";
+patients.forEach(p=>{
+ptable.innerHTML += `<tr><td>${p.name}</td><td>${p.phone}</td><td>${p.kebele}</td><td>${p.ganda}</td></tr>`;
+});
+}
+
+renderPatients();
+summary.innerText = "Total Sales: " + sales + " ETB";
+</script>
+
+</body>
+</html>
